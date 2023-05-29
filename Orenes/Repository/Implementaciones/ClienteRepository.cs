@@ -15,13 +15,10 @@ namespace Orenes.Repository.Implementaciones
             _context = context;
         }
 
-        public async Task<Cliente> ObtenerClientePorNombre(string nombre)
+      
+        public async Task<Cliente> Login(string nombre)
         {
             return await _context.Clientes.FirstOrDefaultAsync(c => c.Nombre == nombre);
-        }
-        public async Task<Cliente> Login(string nombre, string password)
-        {
-            return await _context.Clientes.FirstOrDefaultAsync(c => c.Nombre == nombre && c.Password == password);
         }
         public async Task<Cliente> ObtenerClientePorId(int clienteId)
         {

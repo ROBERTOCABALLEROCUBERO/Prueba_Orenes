@@ -16,7 +16,7 @@ namespace Orenes.Services.Implementaciones
             _config = config;
         }
 
-        public string GenerarToken(string userName, string userType)
+        public string GenerarToken(string userName)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_config["Jwt:key"]);
@@ -26,7 +26,6 @@ namespace Orenes.Services.Implementaciones
                 Subject = new ClaimsIdentity(new Claim[]
                 {
                     new Claim(ClaimTypes.Name, userName),
-                    new Claim(ClaimTypes.Role, userType)
                 }),
                 Expires = DateTime.UtcNow.AddDays(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

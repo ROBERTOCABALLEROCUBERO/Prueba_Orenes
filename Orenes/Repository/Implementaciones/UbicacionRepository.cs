@@ -1,6 +1,8 @@
-﻿namespace Orenes.Repository.Implementaciones
+﻿using Orenes.Repository.Interfaces;
+
+namespace Orenes.Repository.Implementaciones
 {
-    public class UbicacionRepository
+    public class UbicacionRepository : IUbicacionRepository
     {
     }
 }

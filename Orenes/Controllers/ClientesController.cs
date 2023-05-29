@@ -27,21 +27,24 @@ namespace Orenes.Controllers
         }
 
         // GET: api/Clientes/Login
-        [HttpGet("Login")]
+        [HttpPost("Login")]
         public async Task<ActionResult<Cliente>> Login(string nombre, string password)
         {
-            Cliente cliente = await _clienteService.ObtenerClientePorNombre(nombre);
+            Cliente cliente = await _clienteService.Login(nombre);
             if (cliente != null)
             {
                 bool esClaveValida = _securityService.Desencriptar(cliente.Password, password);
                 if (esClaveValida)
                 {
                     // Contraseña válida, realizar el login
-                    var resultadoLogin = await _clienteService.Login(nombre, password);
+         
 
-                    if (resultadoLogin != null)
+                    if (cliente != null)
                     {
-                        return Ok(resultadoLogin);
+                        var token = _securityService.GenerarToken(cliente.Nombre);
+
+                        // Retorna una respuesta 200 OK con el token JWT
+                        return Ok(new { token });
                     }
                     else
                     {
@@ -108,7 +111,7 @@ namespace Orenes.Controllers
             return NoContent();
         }
 
-        // POST: api/Clientes
+        // POST: api/Registro
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Cliente>> Registro(Cliente cliente)

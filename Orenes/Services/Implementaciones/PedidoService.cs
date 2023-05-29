@@ -1,6 +1,8 @@
-﻿namespace Orenes.Services.Implementaciones
+﻿using Orenes.Services.Interfaces;
+
+namespace Orenes.Services.Implementaciones
 {
-    public class PedidoService
+    public class PedidoService : IPedidoService
     {
     }
 }

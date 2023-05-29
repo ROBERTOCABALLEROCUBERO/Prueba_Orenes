@@ -3,7 +3,7 @@
     public interface ISecurityService
     {
 
-        string GenerarToken(string userName, string userType);
+        string GenerarToken(string userName);
 
         public string Encriptar(string clave);
 

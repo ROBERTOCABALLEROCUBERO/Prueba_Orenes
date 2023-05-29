@@ -20,6 +20,11 @@ namespace Orenes.Mapping
         {
             base.OnModelCreating(modelBuilder);
 
+
+            modelBuilder.Entity<Cliente>()
+       .HasIndex(c => c.Nombre)
+       .IsUnique();
+
             modelBuilder.Entity<Cliente>()
            .HasMany(c => c.Pedidos)
            .WithOne(p => p.Cliente)

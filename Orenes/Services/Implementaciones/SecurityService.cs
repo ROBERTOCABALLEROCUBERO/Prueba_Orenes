@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 using Orenes.Services.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -35,8 +36,22 @@ namespace Orenes.Services.Implementaciones
 
             return tokenHandler.WriteToken(token);
         }
+        public string Encriptar(string clave)
+        {
+            var passwordHasher = new PasswordHasher<string>();
+            return passwordHasher.HashPassword(null, clave);
+        }
+
+        public bool Desencriptar(string claveEncriptada, string clave)
+        {
+            var passwordHasher = new PasswordHasher<string>();
+            var result = passwordHasher.VerifyHashedPassword(null, claveEncriptada, clave);
+            return result == PasswordVerificationResult.Success;
+        }
 
     }
+   
+}
      
-    }
+    
 

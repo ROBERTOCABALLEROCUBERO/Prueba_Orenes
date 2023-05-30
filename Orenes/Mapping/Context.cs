@@ -13,6 +13,7 @@ namespace Orenes.Mapping
 
         public DbSet<Cliente> Clientes { get; set; }
         public DbSet<Pedido> Pedidos { get; set; }
+        public DbSet<PedidoEntregado> PedidoEntregado { get; set; }
         public DbSet<Vehiculo> Vehiculos { get; set; }
         public DbSet<Ubicacion> Ubicaciones { get; set; }
 

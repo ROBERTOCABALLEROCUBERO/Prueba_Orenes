@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Orenes.DTO;
 using Orenes.Mapping;
 using Orenes.Models;
+using Orenes.Services.Interfaces;
 
 namespace Orenes.Controllers
 {
@@ -14,111 +19,113 @@ namespace Orenes.Controllers
     [ApiController]
     public class PedidosController : ControllerBase
     {
-        private readonly Context _context;
-
-        public PedidosController(Context context)
+        private readonly IPedidoService _pedidoService;
+        private readonly IClienteService _clienteService;
+        public PedidosController(IPedidoService pedidoService, IClienteService clienteService)
         {
-            _context = context;
+            _pedidoService = pedidoService;
+            _clienteService = clienteService;
+
         }
 
-        // GET: api/Pedidos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Pedido>>> GetPedidos()
+        public async Task<ActionResult<IEnumerable<Pedido>>> ObtenerPedidos()
         {
-          if (_context.Pedidos == null)
-          {
-              return NotFound();
-          }
-            return await _context.Pedidos.ToListAsync();
+            var pedidos = await _pedidoService.ObtenerPedidos();
+            return Ok(pedidos);
         }
 
-        // GET: api/Pedidos/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Pedido>> GetPedido(int id)
+        [HttpGet("{pedidoId}")]
+        public async Task<ActionResult<Pedido>> ObtenerPedido(int pedidoId)
         {
-          if (_context.Pedidos == null)
-          {
-              return NotFound();
-          }
-            var pedido = await _context.Pedidos.FindAsync(id);
-
+            var pedido = await _pedidoService.ObtenerPedido(pedidoId);
             if (pedido == null)
-            {
                 return NotFound();
-            }
 
-            return pedido;
+            return Ok(pedido);
         }
 
-        // PUT: api/Pedidos/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPedido(int id, Pedido pedido)
-        {
-            if (id != pedido.PedidoId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(pedido).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PedidoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/Pedidos
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [Authorize]
         [HttpPost]
-        public async Task<ActionResult<Pedido>> PostPedido(Pedido pedido)
+        public async Task<ActionResult<Pedido>> CrearPedido(PedidoDTO pedido)
         {
-          if (_context.Pedidos == null)
-          {
-              return Problem("Entity set 'Context.Pedidos'  is null.");
-          }
-            _context.Pedidos.Add(pedido);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetPedido", new { id = pedido.PedidoId }, pedido);
+            string usuario = User.FindFirst(ClaimTypes.Name).Value;
+            var cliente = await _clienteService.Login(usuario);
+            var pedidoId = await _pedidoService.CrearPedido(pedido, cliente);
+            return CreatedAtAction(nameof(ObtenerPedido), new { pedidoId }, pedido);
         }
 
-        // DELETE: api/Pedidos/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeletePedido(int id)
+        [HttpPost("MarcarEnProceso")]
+        public async Task<IActionResult> MarcarPedidoEnProceso(int pedidoId)
         {
-            if (_context.Pedidos == null)
+            // Obtener el pedido original de la base de datos
+            var pedido = await _pedidoService.ObtenerPedido(pedidoId);
+
+            if (pedido != null)
             {
-                return NotFound();
-            }
-            var pedido = await _context.Pedidos.FindAsync(id);
-            if (pedido == null)
-            {
-                return NotFound();
+                // Actualizar el estado del pedido a "EnProceso"
+                pedido.status = EstadoPedido.EnProceso;
+
+                // Actualizar el pedido en el servicio
+                await _pedidoService.ActualizarPedido(pedido);
+
+                return Ok(); // O cualquier otro resultado que desees devolver en caso de éxito
             }
 
-            _context.Pedidos.Remove(pedido);
-            await _context.SaveChangesAsync();
+            return NotFound(); // O cualquier otro resultado que desees devolver en caso de no encontrar el pedido
+        }
+
+
+        [HttpPut("{pedidoId}")]
+        public async Task<IActionResult> ActualizarPedido(int pedidoId, Pedido pedido)
+        {
+            if (pedidoId != pedido.PedidoId)
+                return BadRequest();
+
+            var resultado = await _pedidoService.ActualizarPedido(pedido);
+            if (!resultado)
+                return NotFound();
 
             return NoContent();
         }
 
-        private bool PedidoExists(int id)
+        [HttpDelete("{pedidoId}")]
+        public async Task<IActionResult> EliminarPedido(int pedidoId)
         {
-            return (_context.Pedidos?.Any(e => e.PedidoId == id)).GetValueOrDefault();
+            var resultado = await _pedidoService.EliminarPedido(pedidoId);
+            if (!resultado)
+                return NotFound();
+
+            return NoContent();
         }
+
+
+        [HttpPost("MarcarEntregado")]
+        public async Task MarcarPedidoComoEntregado(int pedidoId)
+        {
+            // Obtener el pedido original de la base de datos
+            var pedido = await _pedidoService.ObtenerPedido(pedidoId);
+
+            if (pedido != null)
+            {
+
+                // Crear una instancia de PedidoEntregado y copiar los datos relevantes
+                var pedidoEntregado = new PedidoEntregado
+                {
+                    ClienteId = pedido.ClienteId,
+                    DireccionEntrega = pedido.DireccionEntrega,
+                    Status = EstadoPedido.Entregado,
+                    Cliente = pedido.Cliente
+                };
+
+                // Guardar el pedido entregado en la tabla correspondiente
+                _pedidoService.Pedidoentregado(pedidoEntregado);
+
+                // Eliminar el pedido original de la tabla de pedidos
+                _pedidoService.EliminarPedido(pedido.PedidoId);
+
+            }
+        }
+
     }
 }

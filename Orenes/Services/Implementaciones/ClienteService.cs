@@ -17,7 +17,11 @@ namespace Orenes.Services.Implementaciones
         {
             _clienteRepository = clienteRepository;
         }
-
+        public async Task<Cliente> ObtenerDatosUsuarioPorNombre(string nombreUsuario)
+        {
+            // Puedes agregar aquí lógica adicional si es necesario antes de llamar al repositorio
+            return await _clienteRepository.ObtenerDatosUsuarioPorNombre(nombreUsuario);
+        }
         public async Task<Cliente> Login(string nombre)
         {
             return await _clienteRepository.Login(nombre);

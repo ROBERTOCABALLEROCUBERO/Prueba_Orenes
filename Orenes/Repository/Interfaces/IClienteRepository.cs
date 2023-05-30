@@ -10,6 +10,8 @@ namespace Orenes.Repository.Interfaces
         Task<int> CrearCliente(Cliente cliente);
         Task<bool> ActualizarCliente(Cliente cliente);
         Task<bool> EliminarCliente(int clienteId);
+        Task<Cliente> ObtenerDatosUsuarioPorNombre(string nombreUsuario);
+
 
     }
 }

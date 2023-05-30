@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
-
+string CorsConfiguration = "_corsConfiguration";
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -66,7 +66,16 @@ builder.Services.AddSwaggerGen(c =>
 });
 var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:key"]);
 
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: CorsConfiguration,
+                      builder =>
+                      {
+                          builder.WithOrigins("http://localhost:4200")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                      });
+});
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -98,6 +107,9 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+
+app.UseCors(CorsConfiguration);
 
 app.MapControllers();
 

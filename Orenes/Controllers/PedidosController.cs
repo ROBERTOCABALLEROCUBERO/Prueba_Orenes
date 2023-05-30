@@ -92,16 +92,18 @@ namespace Orenes.Controllers
         [HttpDelete("{pedidoId}")]
         public async Task<IActionResult> EliminarPedido(int pedidoId)
         {
-            var resultado = await _pedidoService.EliminarPedido(pedidoId);
+            var pedido = await _pedidoService.ObtenerPedido(pedidoId);
+            var resultado = await _pedidoService.EliminarPedido(pedido);
             if (!resultado)
+            {
                 return NotFound();
-
+            }
             return NoContent();
         }
 
 
         [HttpPost("MarcarEntregado")]
-        public async Task MarcarPedidoComoEntregado(int pedidoId)
+        public async Task<IActionResult> MarcarPedidoComoEntregado(int pedidoId)
         {
             // Obtener el pedido original de la base de datos
             var pedido = await _pedidoService.ObtenerPedido(pedidoId);
@@ -123,8 +125,10 @@ namespace Orenes.Controllers
 
                 // Eliminar el pedido original de la tabla de pedidos
                 _pedidoService.EliminarPedido(pedido);
-
+                return NoContent(); 
             }
+
+            return BadRequest();
         }
 
     }

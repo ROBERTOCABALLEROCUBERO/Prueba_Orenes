@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -142,8 +144,39 @@ namespace Orenes.Controllers
             return NoContent();
         }
 
- 
-    
-}
+        [Authorize]
+        // GET: api/Clientes/ObtenerDatosUsuario
+        [HttpGet("ObtenerDatosUsuario")]
+        public async Task<ActionResult<Cliente>> ObtenerDatosUsuario()
+        {
+            try
+            {
+                // Obtener el token del encabezado de la solicitud
+
+
+                // Decodificar el token y obtener el valor del nombre del usuario
+                string usuario = User.FindFirst(ClaimTypes.Name).Value;
+
+
+                // Obtener los datos del usuario a través del servicio
+                Cliente cliente = await _clienteService.ObtenerDatosUsuarioPorNombre(usuario);
+
+                if (cliente != null)
+                {
+                    return Ok(cliente);
+                }
+                else
+                {
+                    return NotFound("Cliente no encontrado");
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest("Error al obtener los datos del usuario: " + ex.Message);
+            }
+        }
+
+
+    }
 
 }

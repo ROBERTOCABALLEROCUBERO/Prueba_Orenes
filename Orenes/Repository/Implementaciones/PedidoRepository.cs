@@ -54,7 +54,6 @@ namespace Orenes.Repository.Implementaciones
             try
             {
                 _context.PedidoEntregado.Add(pedido);
-                await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)

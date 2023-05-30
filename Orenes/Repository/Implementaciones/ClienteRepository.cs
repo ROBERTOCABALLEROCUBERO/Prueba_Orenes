@@ -3,6 +3,8 @@ using Orenes.Mapping;
 using Orenes.Models;
 using Orenes.Repository.Interfaces;
 using System.Data.SqlClient;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace Orenes.Repository.Implementaciones
 {
@@ -15,7 +17,13 @@ namespace Orenes.Repository.Implementaciones
             _context = context;
         }
 
-      
+        public async Task<Cliente> ObtenerDatosUsuarioPorNombre(string nombreUsuario)
+        {
+            Cliente cliente = await _context.Clientes.FirstOrDefaultAsync(c => c.Nombre == nombreUsuario);
+
+            return cliente;
+        }
+
         public async Task<Cliente> Login(string nombre)
         {
             return await _context.Clientes.FirstOrDefaultAsync(c => c.Nombre == nombre);

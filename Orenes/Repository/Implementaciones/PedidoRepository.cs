@@ -39,12 +39,11 @@ namespace Orenes.Repository.Implementaciones
             return true;
         }
 
-        public async Task<bool> EliminarPedido(int pedidoId)
+        public async Task<bool> EliminarPedido(Pedido pedido)
         {
-            var pedido = await _context.Pedidos.FindAsync(pedidoId);
-            if (pedido == null)
+            if (pedido == null) { 
                 return false;
-
+        }
             _context.Pedidos.Remove(pedido);
             await _context.SaveChangesAsync();
             return true;

@@ -9,7 +9,7 @@ namespace Orenes.Services.Interfaces
         Task<Pedido> ObtenerPedido(int pedidoId);
         Task<int> CrearPedido(PedidoDTO pedido, Cliente cliente);
         Task<bool> ActualizarPedido(Pedido pedido);
-        Task<bool> EliminarPedido(int pedidoId);
+        Task<bool> EliminarPedido(Pedido pedido);
         Task<bool> Pedidoentregado(PedidoEntregado pedidoEntregado);
     }
 }

@@ -122,7 +122,7 @@ namespace Orenes.Controllers
                 _pedidoService.Pedidoentregado(pedidoEntregado);
 
                 // Eliminar el pedido original de la tabla de pedidos
-                _pedidoService.EliminarPedido(pedido.PedidoId);
+                _pedidoService.EliminarPedido(pedido);
 
             }
         }

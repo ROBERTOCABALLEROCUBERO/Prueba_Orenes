@@ -30,6 +30,8 @@ builder.Services.AddScoped<IVehiculoRepository, VehiculoRepository>();
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
 builder.Services.AddScoped<IUbicacionRepository, UbicacionRepository>();
 builder.Services.AddScoped<IPedidoRepository, PedidoRepository>();
+builder.Services.AddScoped<IPedidosEntregadosRepository, PedidosEntregadosRepository>();
+builder.Services.AddScoped<IPedidosEntregadosService, PedidosEntregadosService>();
 
 
 

@@ -46,9 +46,9 @@ namespace Orenes.Services.Implementaciones
             return await _pedidoRepository.ActualizarPedido(pedido);
         }
 
-        public async Task<bool> EliminarPedido(int pedidoId)
+        public async Task<bool> EliminarPedido(Pedido pedido)
         {
-            return await _pedidoRepository.EliminarPedido(pedidoId);
+            return await _pedidoRepository.EliminarPedido(pedido);
         }
 
         public async Task<bool> Pedidoentregado(PedidoEntregado pedidoEntregado)

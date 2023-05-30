@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Orenes.Mapping;
+﻿using Microsoft.AspNetCore.Mvc;
 using Orenes.Models;
+using Microsoft.AspNetCore.Mvc;
+using Orenes.Models;
+using Orenes.Services;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Orenes.Controllers
 {
@@ -14,33 +12,26 @@ namespace Orenes.Controllers
     [ApiController]
     public class VehiculosController : ControllerBase
     {
-        private readonly Context _context;
+        private readonly IVehiculosService _vehiculosService;
 
-        public VehiculosController(Context context)
+        public VehiculosController(IVehiculosService vehiculosService)
         {
-            _context = context;
+            _vehiculosService = vehiculosService;
         }
 
         // GET: api/Vehiculos
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Vehiculo>>> GetVehiculos()
         {
-          if (_context.Vehiculos == null)
-          {
-              return NotFound();
-          }
-            return await _context.Vehiculos.ToListAsync();
+            var vehiculos = await _vehiculosService.ObtenerVehiculos();
+            return Ok(vehiculos);
         }
 
         // GET: api/Vehiculos/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Vehiculo>> GetVehiculo(int id)
         {
-          if (_context.Vehiculos == null)
-          {
-              return NotFound();
-          }
-            var vehiculo = await _context.Vehiculos.FindAsync(id);
+            var vehiculo = await _vehiculosService.ObtenerVehiculo(id);
 
             if (vehiculo == null)
             {
@@ -55,30 +46,16 @@ namespace Orenes.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutVehiculo(int id, Vehiculo vehiculo)
         {
-            if (id != vehiculo.VehiculoId)
+            var resultado = await _vehiculosService.ActualizarVehiculo(id, vehiculo);
+
+            if (resultado)
+            {
+                return NoContent();
+            }
+            else
             {
                 return BadRequest();
             }
-
-            _context.Entry(vehiculo).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!VehiculoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
         }
 
         // POST: api/Vehiculos
@@ -86,39 +63,25 @@ namespace Orenes.Controllers
         [HttpPost]
         public async Task<ActionResult<Vehiculo>> PostVehiculo(Vehiculo vehiculo)
         {
-          if (_context.Vehiculos == null)
-          {
-              return Problem("Entity set 'Context.Vehiculos'  is null.");
-          }
-            _context.Vehiculos.Add(vehiculo);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetVehiculo", new { id = vehiculo.VehiculoId }, vehiculo);
+            var nuevoVehiculo = await _vehiculosService.AgregarVehiculo(vehiculo);
+            return CreatedAtAction(nameof(GetVehiculo), new { id = nuevoVehiculo.VehiculoId }, nuevoVehiculo);
         }
 
         // DELETE: api/Vehiculos/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehiculo(int id)
         {
-            if (_context.Vehiculos == null)
+            var resultado = await _vehiculosService.EliminarVehiculo(id);
+
+            if (resultado)
+            {
+                return NoContent();
+            }
+            else
             {
                 return NotFound();
             }
-            var vehiculo = await _context.Vehiculos.FindAsync(id);
-            if (vehiculo == null)
-            {
-                return NotFound();
-            }
-
-            _context.Vehiculos.Remove(vehiculo);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool VehiculoExists(int id)
-        {
-            return (_context.Vehiculos?.Any(e => e.VehiculoId == id)).GetValueOrDefault();
         }
     }
 }
+

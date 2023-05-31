@@ -10,7 +10,7 @@ namespace Orenes.Repository.Implementaciones
 
         private readonly Context _context;
 
-        public UbicacionesRepository(Context context)
+        public UbicacionRepository(Context context)
         {
             _context = context;
         }
@@ -34,8 +34,6 @@ namespace Orenes.Repository.Implementaciones
                 return false;
             }
 
-            ubicacionExistente.Propiedad1 = ubicacion.Propiedad1;
-            ubicacionExistente.Propiedad2 = ubicacion.Propiedad2;
 
             await _context.SaveChangesAsync();
             return true;

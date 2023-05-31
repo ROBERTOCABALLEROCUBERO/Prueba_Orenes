@@ -21,6 +21,7 @@ namespace Orenes.Controllers
     {
         private readonly IPedidoService _pedidoService;
         private readonly IClienteService _clienteService;
+
         public PedidosController(IPedidoService pedidoService, IClienteService clienteService)
         {
             _pedidoService = pedidoService;
@@ -28,8 +29,18 @@ namespace Orenes.Controllers
 
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Pedido>>> ObtenerPedidos()
+        {
+            string usuario = User.FindFirst(ClaimTypes.Name).Value;
+            var cliente = _clienteService.ObtenerDatosUsuarioPorNombre(usuario);
+            var pedidos = await _pedidoService.ObtenerPedidosporIduser(cliente.Id);
+            return Ok(pedidos);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Pedido>>> ObtenerPedidosGeneral()
         {
             var pedidos = await _pedidoService.ObtenerPedidos();
             return Ok(pedidos);
@@ -50,7 +61,7 @@ namespace Orenes.Controllers
         public async Task<ActionResult<Pedido>> CrearPedido(PedidoDTO pedido)
         {
             string usuario = User.FindFirst(ClaimTypes.Name).Value;
-            var cliente = await _clienteService.Login(usuario);
+            var cliente = await _clienteService.ObtenerDatosUsuarioPorNombre(usuario);
             var pedidoId = await _pedidoService.CrearPedido(pedido, cliente);
             return CreatedAtAction(nameof(ObtenerPedido), new { pedidoId }, pedido);
         }

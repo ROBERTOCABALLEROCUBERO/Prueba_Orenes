@@ -2,7 +2,7 @@
 using Orenes.Models;
 using Microsoft.AspNetCore.Mvc;
 using Orenes.Models;
-using Orenes.Services;
+using Orenes.Services.Interfaces;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,9 +12,9 @@ namespace Orenes.Controllers
     [ApiController]
     public class VehiculosController : ControllerBase
     {
-        private readonly IVehiculosService _vehiculosService;
+        private readonly IVehiculoService _vehiculosService;
 
-        public VehiculosController(IVehiculosService vehiculosService)
+        public VehiculosController(IVehiculoService vehiculosService)
         {
             _vehiculosService = vehiculosService;
         }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Orenes.DTO;
 using Orenes.Mapping;
 using Orenes.Models;
 using Orenes.Services.Interfaces;
@@ -64,9 +65,10 @@ namespace Orenes.Controllers
         // POST: api/Ubicaciones
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
+
         public async Task<ActionResult<Ubicacion>> PostUbicacion(Ubicacion ubicacion)
         {
-            var nuevaUbicacion = await _ubicacionesService.AgregarUbicacion(ubicacion);
+            Ubicacion nuevaUbicacion = await _ubicacionesService.AgregarUbicacion(ubicacion);
 
             return CreatedAtAction("GetUbicacion", new { id = nuevaUbicacion.UbicacionId }, nuevaUbicacion);
         }

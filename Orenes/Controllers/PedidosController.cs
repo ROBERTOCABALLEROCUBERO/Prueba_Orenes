@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +14,7 @@ using Orenes.DTO;
 using Orenes.Mapping;
 using Orenes.Models;
 using Orenes.Services.Interfaces;
+using Newtonsoft.Json;
 
 namespace Orenes.Controllers
 {
@@ -29,15 +32,8 @@ namespace Orenes.Controllers
 
         }
 
-        [Authorize]
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Pedido>>> ObtenerPedidos()
-        {
-            string usuario = User.FindFirst(ClaimTypes.Name).Value;
-            var cliente = _clienteService.ObtenerDatosUsuarioPorNombre(usuario);
-            var pedidos = await _pedidoService.ObtenerPedidosporIduser(cliente.Id);
-            return Ok(pedidos);
-        }
+       
+     
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Pedido>>> ObtenerPedidosGeneral()
@@ -54,6 +50,17 @@ namespace Orenes.Controllers
                 return NotFound();
 
             return Ok(pedido);
+        }
+        [Authorize]
+        [HttpGet("PedidosCliente")]
+        public async Task<ActionResult<List<PedidoDTO>>> PedidosCliente()
+        {
+            string usuario = User.FindFirst(ClaimTypes.Name).Value;
+
+            var cliente = await _clienteService.ObtenerDatosUsuarioPorNombre(usuario);
+            var pedidos = await _pedidoService.ObtenerPedidosPorIdUsuario(cliente.ClienteId);
+
+            return Ok(pedidos);
         }
 
         [Authorize]

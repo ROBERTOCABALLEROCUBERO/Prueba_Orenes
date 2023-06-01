@@ -1,4 +1,5 @@
-﻿using Orenes.Models;
+﻿using Orenes.DTO;
+using Orenes.Models;
 
 namespace Orenes.Services.Interfaces
 {

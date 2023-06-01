@@ -48,7 +48,12 @@ namespace Orenes.Repository.Implementaciones
             await _context.SaveChangesAsync();
             return true;
         }
-
+        public async Task<List<Pedido>> ObtenerPedidosPorIdUsuario(int idUsuario)
+        {
+            return await _context.Pedidos
+                      .Where(p => p.ClienteId == idUsuario)
+                      .ToListAsync();
+        }
         public async Task<bool> CrearPedidoEntregado(PedidoEntregado pedido)
         {
             try

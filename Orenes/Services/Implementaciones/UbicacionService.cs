@@ -1,4 +1,5 @@
-﻿using Orenes.Models;
+﻿using Orenes.DTO;
+using Orenes.Models;
 using Orenes.Repository.Interfaces;
 using Orenes.Services.Interfaces;
 
@@ -33,6 +34,7 @@ namespace Orenes.Services.Implementaciones
 
         public async Task<Ubicacion> AgregarUbicacion(Ubicacion ubicacion)
         {
+           
             var nuevaUbicacion = await _ubicacionesRepository.AgregarUbicacion(ubicacion);
             return nuevaUbicacion;
         }

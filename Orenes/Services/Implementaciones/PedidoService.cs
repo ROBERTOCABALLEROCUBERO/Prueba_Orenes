@@ -19,7 +19,20 @@ namespace Orenes.Services.Implementaciones
         {
             return await _pedidoRepository.ObtenerTodosLosPedidos();
         }
-   
+        public async Task<List<PedidoDTO>> ObtenerPedidosPorIdUsuario(int idUsuario)
+        {
+            var pedidos = await _pedidoRepository.ObtenerPedidosPorIdUsuario(idUsuario);
+
+            var pedidosDTO = pedidos.Select(p => new PedidoDTO
+            {
+                DireccionEntrega = p.DireccionEntrega,
+                status = p.status
+            }).ToList();
+
+            return pedidosDTO;
+        }
+
+
 
         public async Task<Pedido> ObtenerPedido(int pedidoId)
         {

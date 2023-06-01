@@ -9,6 +9,8 @@ namespace Orenes.Repository.Interfaces
         Task<int> CrearPedido(Pedido pedido);
         Task<bool> ActualizarPedido(Pedido pedido);
         Task<bool> EliminarPedido(Pedido pedido);
+        Task<List<Pedido>> ObtenerPedidosPorIdUsuario(int idUsuario);
+
 
         Task<bool> CrearPedidoEntregado(PedidoEntregado pedido);
     }

@@ -8,7 +8,7 @@ Prueba sobre el servicio de reparto.
 2. Crea una base de datos.
 3. Modifica el archivo de configuración y la cadena de conexión.
 4. Ejecuta las migraciones o crea tu propia migración y actualiza la base de datos.
-5. En Angular, dentro de la ruta `.\angular-Pruebatecnica\src\app\API\services`, modifica los archivos con la URL de la API correspondiente. En tu caso, es `https://localhost:7191/`.
+5. En Angular, dentro de la ruta `.\angular-Pruebatecnica\src\app\API\services`, modifica los archivos con la URL de la API correspondiente. En mi caso, es `https://localhost:7191/`.
 6. Ejecuta el proyecto en ambos entornos. Asegúrate de tener las herramientas necesarias instaladas.
 
 ## Nivel 1: Funcionamiento básico de CRUD

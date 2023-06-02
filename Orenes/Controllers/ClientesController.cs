@@ -32,6 +32,8 @@ namespace Orenes.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<Cliente>> Login(string nombre, string password)
         {
+            // Realiza el proceso de login para un cliente
+
             Cliente cliente = await _clienteService.Login(nombre);
             if (cliente != null)
             {
@@ -75,6 +77,8 @@ namespace Orenes.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
         {
+            // Obtiene todos los clientes disponibles
+
             var clientes = await _clienteService.ObtenerTodosLosClientes();
             return Ok(clientes);
         }
@@ -83,6 +87,7 @@ namespace Orenes.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Cliente>> GetCliente(int id)
         {
+            // Obtiene un cliente específico por su ID
             var cliente = await _clienteService.ObtenerClientePorId(id);
 
             if (cliente == null)
@@ -98,6 +103,7 @@ namespace Orenes.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCliente(int id, Cliente cliente)
         {
+            // Actualiza un cliente existente por su ID
             if (id != cliente.ClienteId)
             {
                 return BadRequest();
@@ -118,6 +124,8 @@ namespace Orenes.Controllers
         [HttpPost]
         public async Task<ActionResult<Cliente>> Registro(Cliente cliente)
         {
+            
+            // Registra un nuevo cliente en el sistema
 
             var clienteEncriptado = new Cliente
             {
@@ -134,6 +142,7 @@ namespace Orenes.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCliente(int id)
         {
+            // Elimina un cliente existente por su ID
             var deleted = await _clienteService.EliminarCliente(id);
 
             if (!deleted)

@@ -28,6 +28,7 @@ namespace Orenes.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Ubicacion>>> GetUbicaciones()
         {
+            //Obtiene las ubicaciones
             var ubicaciones = await _ubicacionesService.ObtenerUbicaciones();
             return Ok(ubicaciones);
         }
@@ -36,6 +37,7 @@ namespace Orenes.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Ubicacion>> GetUbicacion(int id)
         {
+            //Obtiene la ubicacion por Id
             var ubicacion = await _ubicacionesService.ObtenerUbicacion(id);
 
             if (ubicacion == null)
@@ -51,6 +53,7 @@ namespace Orenes.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUbicacion(int id, Ubicacion ubicacion)
         {
+            //Actualiza la ubicacion en concreto
             var resultado = await _ubicacionesService.ActualizarUbicacion(id, ubicacion);
 
             if (resultado)
@@ -69,6 +72,7 @@ namespace Orenes.Controllers
 
         public async Task<ActionResult<UbicacionDTO>> PostUbicacion(UbicacionDTO ubicacion)
         {
+            //Agraga una nueva ubicacion
             UbicacionDTO nuevaUbicacion = await _ubicacionesService.AgregarUbicacion(ubicacion);
 
             return CreatedAtAction("GetUbicacion", new { id = nuevaUbicacion.UbicacionId }, nuevaUbicacion);
@@ -78,6 +82,7 @@ namespace Orenes.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUbicacion(int id)
         {
+            //Borra la ubicacion
             var resultado = await _ubicacionesService.EliminarUbicacion(id);
 
             if (resultado)
@@ -93,6 +98,8 @@ namespace Orenes.Controllers
         [HttpGet("pedidos")]
         public async Task<ActionResult<Ubicacion>> ObtenerUbicacionMasReciente(int pedidoId)
         {
+
+            //En este caso lo que hace es coger del registro de cada ubicacion a través del pedido su ubicación más reciente en el reparto, así en el front se puede calcular el tiempo restante
             var ubicacion = await _ubicacionesService.ObtenerUbicacionMasReciente(pedidoId);
             if (ubicacion == null)
             {

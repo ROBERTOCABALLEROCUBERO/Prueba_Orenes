@@ -25,6 +25,7 @@ namespace Orenes.Controllers
         [HttpGet]
         public async Task<ActionResult<List<PedidoEntregado>>> ObtenerTodosLosPE()
         {
+            //Obtiene todos los pedidos entregados
             try
             {
                 var pedidosEntregados = await _pedidoEntregadosService.ObtenerTodosLosPE();
@@ -41,6 +42,7 @@ namespace Orenes.Controllers
         [HttpGet("obtenercliente")]
         public async Task<ActionResult<List<PedidoEntregado>>> Obtenerporcliente()
         {
+            //Obtiene los pedidos entregados por cliente
             try
             {
                 string nombre = User.FindFirst(ClaimTypes.Name).Value;
@@ -60,6 +62,7 @@ namespace Orenes.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<PedidoEntregado>> ObtenerPEPorId(int id)
         {
+            ///Obtiene los pedidos entregados por Id
             try
             {
                 var pedidoEntregado = await _pedidoEntregadosService.ObtenerPEPorId(id);
@@ -78,6 +81,7 @@ namespace Orenes.Controllers
         [HttpPost]
         public async Task<ActionResult<PedidoEntregado>> CrearPE(PedidoEntregado pedidoEntregado)
         {
+            //Crea un nuevo pedido entregado manualmente
             try
             {
                 var nuevoPedidoEntregado = await _pedidoEntregadosService.CrearPE(pedidoEntregado);
@@ -93,6 +97,7 @@ namespace Orenes.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<PedidoEntregado>> ActualizarPE(int id, PedidoEntregado pedidoEntregado)
         {
+            //Actualiza el PedidoEntregado
             try
             {
                 var pedidoActualizado = await _pedidoEntregadosService.ActualizarPE(id, pedidoEntregado);
@@ -111,6 +116,8 @@ namespace Orenes.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<bool>> EliminarPE(int id)
         {
+
+            //Elimina el PedidoEntregado
             try
             {
                 var resultado = await _pedidoEntregadosService.EliminarPE(id);

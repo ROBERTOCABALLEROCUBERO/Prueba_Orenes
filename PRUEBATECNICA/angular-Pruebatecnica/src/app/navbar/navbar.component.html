@@ -10,16 +10,13 @@
             <a class="nav-link" routerLink="/">Index</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLink="/RegistrarCliente">Registrar Cliente</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/login">Login</a>
-          </li>
-          <li class="nav-item" *ngIf="!hasToken()">
-            <a class="nav-link" routerLink="/Accesovehiculo">Acceso Vehículo</a>
+            <a class="nav-link" routerLink="/login" *ngIf="hasToken()">Login</a>
           </li>
           <li class="nav-item" *ngIf="hasToken()">
-            <a class="nav-link" routerLink="/Cliente">Cliente</a>
+            <a class="nav-link" routerLink="/Accesovehiculo">Acceso Vehículo</a>
+          </li>
+          <li class="nav-item" *ngIf="!hasToken()">
+            <a class="nav-link" routerLink="/cliente">Cliente</a>
           </li>
         </ul>
       </div>

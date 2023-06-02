@@ -14,6 +14,7 @@ namespace Orenes.Models
 
         public int PedidoId { get; set; }
         public int ClienteId { get; set; }
+        public int? VehiculoId1 { get; set; }
         public string DireccionEntrega { get; set; }
 
         public EstadoPedido status { get; set; }

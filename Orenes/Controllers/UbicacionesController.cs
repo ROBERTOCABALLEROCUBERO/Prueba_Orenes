@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Orenes.DTO;
 using Orenes.Mapping;
 using Orenes.Models;
+using Orenes.Services.Implementaciones;
 using Orenes.Services.Interfaces;
 
 namespace Orenes.Controllers
@@ -66,9 +67,9 @@ namespace Orenes.Controllers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
 
-        public async Task<ActionResult<Ubicacion>> PostUbicacion(Ubicacion ubicacion)
+        public async Task<ActionResult<UbicacionDTO>> PostUbicacion(UbicacionDTO ubicacion)
         {
-            Ubicacion nuevaUbicacion = await _ubicacionesService.AgregarUbicacion(ubicacion);
+            UbicacionDTO nuevaUbicacion = await _ubicacionesService.AgregarUbicacion(ubicacion);
 
             return CreatedAtAction("GetUbicacion", new { id = nuevaUbicacion.UbicacionId }, nuevaUbicacion);
         }
@@ -87,6 +88,18 @@ namespace Orenes.Controllers
             {
                 return NotFound();
             }
+        }
+
+        [HttpGet("pedidos")]
+        public async Task<ActionResult<Ubicacion>> ObtenerUbicacionMasReciente(int pedidoId)
+        {
+            var ubicacion = await _ubicacionesService.ObtenerUbicacionMasReciente(pedidoId);
+            if (ubicacion == null)
+            {
+                return NotFound();
+            }
+
+            return ubicacion;
         }
     }
 }

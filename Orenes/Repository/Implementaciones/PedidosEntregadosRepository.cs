@@ -18,42 +18,49 @@ namespace Orenes.Repository.Implementaciones
             _context = context;
         }
 
-        public async Task<List<PedidoEntregado>> ObtenerTodos()
+        public async Task<List<PedidoEntregado>> ObtenerTodosLosPE()
         {
-            // Obtener todos los pedidos entregados
             return await _context.PedidoEntregado.ToListAsync();
         }
 
-        public async Task<PedidoEntregado> ObtenerPorId(int pedidoId)
+        public async Task<PedidoEntregado> ObtenerPEPorId(int id)
         {
-            // Obtener un pedido entregado por su ID
-            return await _context.PedidoEntregado.FindAsync(pedidoId);
+            return await _context.PedidoEntregado.FindAsync(id);
         }
 
-        public async Task Crear(PedidoEntregado pedidoEntregado)
+        public async Task<PedidoEntregado> CrearPE(PedidoEntregado pedidoEntregado)
         {
-            // Crear un nuevo pedido entregado
-            await _context.PedidoEntregado.AddAsync(pedidoEntregado);
+            _context.PedidoEntregado.Add(pedidoEntregado);
             await _context.SaveChangesAsync();
+            return pedidoEntregado;
         }
 
-        public async Task Actualizar(PedidoEntregado pedidoEntregado)
+        public async Task<PedidoEntregado> ActualizarPE(int id, PedidoEntregado pedidoEntregado)
         {
-            // Actualizar un pedido entregado existente
-            _context.PedidoEntregado.Update(pedidoEntregado);
+            var peExistente = await _context.PedidoEntregado.FindAsync(id);
+            if (peExistente == null)
+                return null;
+
             await _context.SaveChangesAsync();
+            return peExistente;
         }
 
-        public async Task Eliminar(int pedidoId)
+        public async Task<bool> EliminarPE(int id)
         {
-            // Eliminar un pedido entregado por su ID
-            var pedidoEntregado = await _context.PedidoEntregado.FindAsync(pedidoId);
-            if (pedidoEntregado != null)
-            {
-                _context.PedidoEntregado.Remove(pedidoEntregado);
-                await _context.SaveChangesAsync();
-            }
+            var peExistente = await _context.PedidoEntregado.FindAsync(id);
+            if (peExistente == null)
+                return false;
+
+            _context.PedidoEntregado.Remove(peExistente);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<List<PedidoEntregado>> ObtenerPorClienteId(int clienteId)
+        {
+            return await _context.PedidoEntregado.Where(pe => pe.ClienteId == clienteId).ToListAsync();
         }
     }
-}
 
+  
+}

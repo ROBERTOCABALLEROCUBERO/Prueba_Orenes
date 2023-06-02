@@ -7,6 +7,7 @@ namespace Orenes.Services.Interfaces
     {
         Task<List<Pedido>> ObtenerPedidos();
         Task<List<PedidoDTO>> ObtenerPedidosPorIdUsuario(int idUsuario);
+        Task<List<PedidoDTO>> ObtenerPedidosPorVehiculo(int vehiculoId);
 
         Task<Pedido> ObtenerPedido(int pedidoId);
         Task<int> CrearPedido(PedidoDTO pedido, Cliente cliente);

@@ -40,9 +40,18 @@ namespace Orenes.Repository.Implementaciones
             return true;
         }
 
-        public async Task<Ubicacion> AgregarUbicacion(Ubicacion ubicacion)
+        public async Task<UbicacionDTO> AgregarUbicacion(UbicacionDTO ubicacion)
         {
-            _context.Ubicaciones.Add(ubicacion);
+            
+            _context.Ubicaciones.Add(new Ubicacion
+            {
+                UbicacionId = ubicacion.UbicacionId,
+                VehiculoId = ubicacion.VehiculoId,
+                PedidoId = ubicacion.PedidoId,
+                Latitud = ubicacion.Latitud,
+                Longitud = ubicacion.Longitud,
+                FechaHora = ubicacion.FechaHora
+            });
             await _context.SaveChangesAsync();
 
             return ubicacion;
@@ -61,6 +70,14 @@ namespace Orenes.Repository.Implementaciones
             await _context.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<Ubicacion> ObtenerUbicacionMasReciente(int pedidoId)
+        {
+            return await _context.Ubicaciones
+                .Where(u => u.PedidoId == pedidoId)
+                .OrderByDescending(u => u.FechaHora)
+                .FirstOrDefaultAsync();
         }
     }
 }

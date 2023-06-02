@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Orenes.DTO;
 using Orenes.Mapping;
 using Orenes.Models;
 using Orenes.Repository.Interfaces;
@@ -18,7 +19,28 @@ namespace Orenes.Repository.Implementaciones
         {
             return await _context.Pedidos.ToListAsync();
         }
+        public async Task<List<PedidoDTO>> ObtenerPedidosPorVehiculo(int vehiculoId)
+        {
+            // Implementa la lógica para obtener los pedidos por vehículo desde el DbContext
+            // y mapearlos a una lista de PedidoDTO
+            var pedidos = await _context.Pedidos
+                .Where(p => p.VehiculoId1 == vehiculoId)
+                .ToListAsync();
 
+            var pedidosDTO = pedidos.Select(p => new PedidoDTO
+            {
+                // Mapea las propiedades relevantes de Pedido a PedidoDTO
+                PedidoId = p.PedidoId,
+                DireccionEntrega = p.DireccionEntrega,
+                status = p.status
+                
+               
+                
+                // Otras propiedades...
+            }).ToList();
+
+            return pedidosDTO;
+        }
         public async Task<Pedido> ObtenerPedidoPorId(int pedidoId)
         {
             return await _context.Pedidos.FindAsync(pedidoId);

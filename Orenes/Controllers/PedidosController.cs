@@ -63,6 +63,17 @@ namespace Orenes.Controllers
             return Ok(pedidos);
         }
 
+        [HttpGet("PedidosVehiculo")]
+        public async Task<ActionResult<List<PedidoDTO>>> PedidosVehiculo(int vehiculoId)
+        {
+
+    
+            var pedidos = await _pedidoService.ObtenerPedidosPorVehiculo(vehiculoId);
+
+            return Ok(pedidos);
+        }
+
+
         [Authorize]
         [HttpPost]
         public async Task<ActionResult<Pedido>> CrearPedido(PedidoDTO pedido)
@@ -74,7 +85,7 @@ namespace Orenes.Controllers
         }
 
         [HttpPost("MarcarEnProceso")]
-        public async Task<IActionResult> MarcarPedidoEnProceso(int pedidoId)
+        public async Task<IActionResult> MarcarPedidoEnProceso(int pedidoId, int vehiculoId)
         {
             // Obtener el pedido original de la base de datos
             var pedido = await _pedidoService.ObtenerPedido(pedidoId);
@@ -83,6 +94,7 @@ namespace Orenes.Controllers
             {
                 // Actualizar el estado del pedido a "EnProceso"
                 pedido.status = EstadoPedido.EnProceso;
+                pedido.VehiculoId1 = vehiculoId;
 
                 // Actualizar el pedido en el servicio
                 await _pedidoService.ActualizarPedido(pedido);

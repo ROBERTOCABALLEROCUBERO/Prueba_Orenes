@@ -45,6 +45,7 @@ namespace Orenes.Mapping
                 .IsRequired();
 
 
+
             modelBuilder.Entity<Ubicacion>()
             .HasOne(u => u.Vehiculo)
             .WithMany(v => v.Ubicaciones)
@@ -56,6 +57,7 @@ namespace Orenes.Mapping
             .WithMany(p => p.Ubicaciones)
             .HasForeignKey(u => u.PedidoId)
             .IsRequired();
+
 
         }
     }

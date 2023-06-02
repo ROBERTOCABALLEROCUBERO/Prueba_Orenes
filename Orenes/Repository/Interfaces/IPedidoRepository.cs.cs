@@ -1,4 +1,5 @@
-﻿using Orenes.Models;
+﻿using Orenes.DTO;
+using Orenes.Models;
 
 namespace Orenes.Repository.Interfaces
 {
@@ -11,7 +12,7 @@ namespace Orenes.Repository.Interfaces
         Task<bool> EliminarPedido(Pedido pedido);
         Task<List<Pedido>> ObtenerPedidosPorIdUsuario(int idUsuario);
 
-
+        Task<List<PedidoDTO>> ObtenerPedidosPorVehiculo(int vehiculoId);
         Task<bool> CrearPedidoEntregado(PedidoEntregado pedido);
     }
 }

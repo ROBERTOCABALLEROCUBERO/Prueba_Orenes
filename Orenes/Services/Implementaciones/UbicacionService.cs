@@ -1,5 +1,6 @@
 ﻿using Orenes.DTO;
 using Orenes.Models;
+using Orenes.Repository.Implementaciones;
 using Orenes.Repository.Interfaces;
 using Orenes.Services.Interfaces;
 
@@ -32,7 +33,7 @@ namespace Orenes.Services.Implementaciones
             return resultado;
         }
 
-        public async Task<Ubicacion> AgregarUbicacion(Ubicacion ubicacion)
+        public async Task<UbicacionDTO> AgregarUbicacion(UbicacionDTO ubicacion)
         {
            
             var nuevaUbicacion = await _ubicacionesRepository.AgregarUbicacion(ubicacion);
@@ -43,6 +44,11 @@ namespace Orenes.Services.Implementaciones
         {
             var resultado = await _ubicacionesRepository.EliminarUbicacion(id);
             return resultado;
+        }
+        public async Task<Ubicacion> ObtenerUbicacionMasReciente(
+             int pedidoId)
+        {
+            return await _ubicacionesRepository.ObtenerUbicacionMasReciente(pedidoId);
         }
     }
 }

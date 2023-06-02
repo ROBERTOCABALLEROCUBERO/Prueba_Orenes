@@ -6,34 +6,44 @@ namespace Orenes.Services.Implementaciones
 {
     public class PedidosEntregadosService : IPedidosEntregadosService
     {
-        private readonly IPedidosEntregadosRepository _pedidosEntregadosRepository;
+        private readonly IPedidosEntregadosRepository _pedidoEntregadosRepository;
 
-        public PedidosEntregadosService(IPedidosEntregadosRepository pedidosEntregadosRepository)
+
+        public PedidosEntregadosService(IPedidosEntregadosRepository pedidoEntregadosRepository)
         {
-            _pedidosEntregadosRepository = pedidosEntregadosRepository;
+            _pedidoEntregadosRepository = pedidoEntregadosRepository;
         }
 
         public async Task<List<PedidoEntregado>> ObtenerTodosLosPE()
         {
-            return await _pedidosEntregadosRepository.ObtenerTodos();
+            return await _pedidoEntregadosRepository.ObtenerTodosLosPE();
         }
 
-        public async Task CrearPedidoEntregado(PedidoEntregado pedidoEntregado)
+        public async Task<PedidoEntregado> ObtenerPEPorId(int id)
         {
-            await _pedidosEntregadosRepository.Crear(pedidoEntregado);
+            return await _pedidoEntregadosRepository.ObtenerPEPorId(id);
+        }
+        public async Task<List<PedidoEntregado>> ObtenerPorClienteId(int clienteId)
+        {
+            return await _pedidoEntregadosRepository.ObtenerPorClienteId(clienteId);
+
+        }
+        public async Task<PedidoEntregado> CrearPE(PedidoEntregado pedidoEntregado)
+        {
+            return await _pedidoEntregadosRepository.CrearPE(pedidoEntregado);
         }
 
-        public async Task ActualizarPedidoEntregado(PedidoEntregado pedidoEntregado)
+        public async Task<PedidoEntregado> ActualizarPE(int id, PedidoEntregado pedidoEntregado)
         {
-            await _pedidosEntregadosRepository.Actualizar(pedidoEntregado);
+            return await _pedidoEntregadosRepository.ActualizarPE(id, pedidoEntregado);
         }
 
-        public async Task EliminarPedidoEntregado(int pedidoId)
+        public async Task<bool> EliminarPE(int id)
         {
-            await _pedidosEntregadosRepository.Eliminar(pedidoId);
+            return await _pedidoEntregadosRepository.EliminarPE(id);
         }
+
+
     }
-
-
 }
 

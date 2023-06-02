@@ -25,11 +25,17 @@ namespace Orenes.Services.Implementaciones
 
             var pedidosDTO = pedidos.Select(p => new PedidoDTO
             {
+                PedidoId = p.PedidoId,
                 DireccionEntrega = p.DireccionEntrega,
                 status = p.status
             }).ToList();
 
             return pedidosDTO;
+        }
+
+        public async Task<List<PedidoDTO>> ObtenerPedidosPorVehiculo(int vehiculoId)
+        {
+            return await _pedidoRepository.ObtenerPedidosPorVehiculo(vehiculoId);
         }
 
 
@@ -42,13 +48,14 @@ namespace Orenes.Services.Implementaciones
         public async Task<int> CrearPedido(PedidoDTO pedidodto, Cliente cliente)
         {
 
-           
 
-          var pedido = new Pedido {
-          Cliente = cliente,
-          status = EstadoPedido.Pendiente,
-          ClienteId = cliente.ClienteId,
-          DireccionEntrega = pedidodto.DireccionEntrega,
+
+            var pedido = new Pedido {
+                Cliente = cliente,
+                status = EstadoPedido.Pendiente,
+                ClienteId = cliente.ClienteId,
+                DireccionEntrega = pedidodto.DireccionEntrega,
+                VehiculoId1 = null
 
         };
             return await _pedidoRepository.CrearPedido(pedido);

@@ -6,7 +6,7 @@ Prueba sobre el servicio de reparto.
 
 1. Usa Visual Studio para el proyecto .NET y VSCode para la aplicación en Angular.
 2. Crea una base de datos.
-3. Modifica el archivo de configuración y la cadena de conexión.
+3. Modifica el archivo de configuración y la cadena de conexión en el proyecto de .NET.
 4. Ejecuta las migraciones o crea tu propia migración y actualiza la base de datos.
 5. En Angular, dentro de la ruta `.\angular-Pruebatecnica\src\app\API\services`, modifica los archivos con la URL de la API correspondiente. En mi caso, es `https://localhost:7191/`.
 6. Ejecuta el proyecto en ambos entornos. Asegúrate de tener las herramientas necesarias instaladas.
@@ -44,4 +44,4 @@ Es recomendable utilizar [Swagger](https://localhost:7191/swagger/index.html) pa
 
 ## Partes a mejorar
 
-Aunque se han priorizado otros aspectos de la aplicación, una de las áreas que se puede mejorar es la falta de roles en la aplicación.
+Como mejora, se implementarían roles en la aplicación, de esta manera se puede mejorar el proceso de administración y seguridad en los endpoints.

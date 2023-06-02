@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h2>Todos los pedidos</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Dirección de entrega</th>
+            <th>Distancia</th>
+            <th>Tiempo estimado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pedido of pedidosConInfo">
+            <td>{{ pedido.direccionEntrega }}</td>
+            <td>{{ pedido.distancia ? pedido.distancia / 1000 : '' }} km</td>
+            <td>{{ pedido.tiempo ? pedido.tiempo.horas + 'h ' + pedido.tiempo.minutos + 'm ' + pedido.tiempo.segundos + 's' : '' }}</td>
+            <td>
+              <button class="btn btn-primary" (click)="marcarPedidoEnProceso(pedido)">Marcar en proceso</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col">
+      <h2>Pedidos en proceso</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Dirección de entrega</th>
+            <th>Distancia</th>
+            <th>Tiempo estimado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pedido of pedidosEnProcesoConInfo">
+            <td>{{ pedido.direccionEntrega }}</td>
+            <td>{{ pedido.distancia ? pedido.distancia / 1000 : '' }} km</td>
+            <td>{{ pedido.tiempo ? pedido.tiempo.horas + 'h ' + pedido.tiempo.minutos + 'm ' + pedido.tiempo.segundos + 's' : '' }}</td>
+            <td>
+              <button class="btn btn-success" (click)="marcarPedidoEntregado(pedido)">Marcar como entregado</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

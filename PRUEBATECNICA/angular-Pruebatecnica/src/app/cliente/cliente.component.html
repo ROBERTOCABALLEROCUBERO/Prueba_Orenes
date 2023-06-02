@@ -1,0 +1,98 @@
+<div class="container">
+  <h2>Crear Pedido</h2>
+
+  <form [formGroup]="clienteForm" (ngSubmit)="crearPedido()" class="mt-4">
+    <div class="form-group">
+      <label for="localidadInput">Localidad:</label>
+      <input
+        type="text"
+        id="localidadInput"
+        formControlName="localidadInput"
+        class="form-control"
+        placeholder="Ingrese la localidad"
+        (input)="buscarLocalidad()"
+      />
+      <ul class="list-group">
+        <li
+          class="list-group-item list-group-item-action"
+          *ngFor="let localidad of localidades"
+          (click)="seleccionarLocalidad(localidad)"
+        >
+          {{ localidad }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="form-group">
+      <label for="calleInput">Calle:</label>
+      <input
+        type="text"
+        id="calleInput"
+        formControlName="calleInput"
+        class="form-control"
+        placeholder="Ingrese el nombre de la calle"
+        (input)="buscarCalles()"
+      />
+      <ul class="list-group">
+        <li
+          class="list-group-item list-group-item-action"
+          *ngFor="let calle of calles"
+          (click)="seleccionarCalle(calle)"
+        >
+          {{ calle }}
+        </li>
+      </ul>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Crear Pedido</button>
+    <div></div>
+  </form>
+
+  <div>
+    <h2>Lista de Pedidos</h2>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let pedido of pedidosaImprimir">
+        <div>
+          <strong>Dirección de Entrega:</strong> {{ pedido.direccionEntrega }}
+        </div>
+        <div [ngClass]="{
+          'text-danger': pedido.status === 0,
+          'text-warning': pedido.status === 1,
+          'text-success': pedido.status === 2
+        }">
+          <strong>Estado:</strong>
+          <span *ngIf="pedido.status === 0"> Pendiente</span>
+          <span *ngIf="pedido.status === 1"> En proceso</span>
+          <span *ngIf="pedido.status === 2"> Entregado</span>
+        </div>
+        <div *ngIf="pedido.tiempo">
+          <strong>Tiempo restante:</strong> {{ pedido.tiempo.horas }}h {{ pedido.tiempo.minutos }}m {{ pedido.tiempo.segundos }}s
+        </div>
+      </li>
+    </ul>
+  </div>
+  
+  
+  <div>
+    <h2>Lista de Pedidos Entregados</h2>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let pedidoEntregado of pedidosEntregados">
+        <div>
+          <strong>Dirección de Entrega:</strong> {{ pedidoEntregado.direccionEntrega }}
+        </div>
+        <div [ngClass]="{
+          'text-danger': pedidoEntregado.status === 0,
+          'text-warning': pedidoEntregado.status === 1,
+          'text-success': pedidoEntregado.status === 2
+        }">
+          <strong>Estado:</strong>
+          <span *ngIf="pedidoEntregado.status === 0"> Pendiente</span>
+          <span *ngIf="pedidoEntregado.status === 1"> En proceso</span>
+          <span *ngIf="pedidoEntregado.status === 2"> Entregado</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  
+  
+</div>

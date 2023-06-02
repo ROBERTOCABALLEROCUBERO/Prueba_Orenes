@@ -99,7 +99,7 @@ namespace Orenes.Controllers
         public async Task<ActionResult<Ubicacion>> ObtenerUbicacionMasReciente(int pedidoId)
         {
 
-            //En este caso lo que hace es coger del registro de cada ubicacion a través del pedido su ubicación más reciente en el reparto, así en el front se puede calcular el tiempo restante
+            //En este caso lo que hace es coger del registro de cada ubicacion a través del pedido su ubicación más reciente en el reparto, así en el front se puede calcular el tiempo restante.
             var ubicacion = await _ubicacionesService.ObtenerUbicacionMasReciente(pedidoId);
             if (ubicacion == null)
             {

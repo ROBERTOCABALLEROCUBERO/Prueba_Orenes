@@ -53,13 +53,15 @@ export class ClienteComponent {
         console.log(pedido.tiempo);
   
       this.pedidosaImprimir.push(pedido);
+    
       } else {
         // No se encontró una ubicación para el pedido
         console.error('No se encontró ubicación para el pedido:', pedido.pedidoId);
+        
       }
     
     } catch (error) {
-      console.error('Error al obtener el tiempo:', error);
+      this.pedidosaImprimir.push(pedido);
       // Maneja el error como desees
     }
   }
@@ -118,7 +120,7 @@ export class ClienteComponent {
     try {
       this.pedidosaImprimir = [];
       const coordenadas: { latitud: number; longitud: number }[] = [];
-  
+  console.log("ESTOS SON MIS PEDIDOS A IMPRIMIR" + this.pedidos)
       for (const pedido of this.pedidos) {
         const direccionEntrega = pedido.direccionEntrega;
         const status = pedido.status;
